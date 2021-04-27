@@ -29,6 +29,7 @@ body
     width: 100%;
     height: 100%;
     overflow-y: scroll;
+    cursor: text;
 }
 
 .editor
@@ -38,8 +39,17 @@ body
     width: 100%;
     height: auto;
     word-break: break-word;
-    cursor: text;
     white-space: pre;
+}
+
+.char
+{
+    white-space: pre;
+}
+
+.newline_p
+{
+    margin: 0px;
 }
 
 .caret 
