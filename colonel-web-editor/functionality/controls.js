@@ -85,12 +85,17 @@ function spanText()
     let span = document.createElement('span');
     if (count == caretPosition && active == editor) 
     {
-      span.innerHTML = char + '<span class="caret"></span>';
+      span.setAttribute('id', 'caret');
     }
-    else
+    if (char != '\n')
     {
       span.innerHTML = char;
     }
+    else
+    {
+      span.innerHTML = '&#x200B;';
+    }
+    
     span.setAttribute('class', 'char');
 
     span.addEventListener('mousedown', function () 
@@ -104,11 +109,22 @@ function spanText()
       caretPosition = position;
       spanText();
     });
-    p.appendChild(span);
+    
     if (char == '\n')
     {
-      let p = document.createElement('p');
+      if (count == 1) 
+      {
+        editor.innerHTML = '\n';
+      }
+
+      p = document.createElement('p');
       editor.appendChild(p);
+      p.appendChild(span);
+      p.setAttribute('class', 'newline_p');
+    }
+    else
+    {
+      p.appendChild(span);
     }
 
     count += 1;
@@ -116,7 +132,7 @@ function spanText()
 
   if (count == 1) 
   {
-    editor.innerHTML = '<span class="caret" id="caret"></span>';
+    editor.innerHTML = '<span id="caret"></span>';
   }
 }
 
