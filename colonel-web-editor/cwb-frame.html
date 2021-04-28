@@ -1,14 +1,70 @@
 <html>
     <head>
         <link rel="stylesheet" href="cwb-stylesheet.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="cwb-data-init.js"></script>
     </head>
     
     <body>
         <div class="container">
             <div class="toolBar">
+                <div class="drop">
 
+                </div>
+                <div class="tools">
+                    <div class="button" id="save">
+                        S
+                    </div>
+                    <div class="button" id="undo">
+                        <
+                    </div>
+                    <div class="button" id="redo">
+                        >
+                    </div>
+                    <div class="seperator"></div>
+                </div>
+                <div class="textTools">
+                    <div class="navSelect" id="quickTextType">
+                        <select class="dropInput"  name="quickTextType">
+                            <option value="title">Title</option>
+                            <option value="heading1">Heading 1</option>
+                            <option value="heading2">Heading 2</option>
+                            <option value="heading3">Heading 3</option>
+                            <option value="paragraph">Paragraph</option>
+                        </select>
+                    </div>
+                    <div class="seperator"></div>
+                    <div class="navSelect" id="fontSel">
+                        <select class="dropInput" name="font">
+                            <option value="arial">Arial</option>
+                            <option value="timesNewRoman">Times New Roman</option>
+                        </select>
+                    </div>
+                    <div class="seperator"></div>
+                    <div class="valSelect" id="textSizeSel">
+                        <input class="dropInput" type="number" min="2" max="72" step="2" value="12">
+                    </div>
+                    <div class="seperator"></div>
+                    <div class="button" id="bold">
+                        <b>B</b>
+                    </div>
+                    <div class="button" id="italic">
+                        <i>I</i>
+                    </div>
+                    <div class="button" id="underline">
+                        <u>U</u>
+                    </div>
+                    <div class="seperator"></div>
+                    <div class="button" id="textColour">
+                        C
+                    </div>
+                    <div class="button" id="higlightColour">
+                        H
+                    </div>
+                </div>
+                <div class="spacer">
+
+                </div>
+                
             </div>
             <div class="textSection" id="textSection"> 
                 <div class="editor" id="editor">

@@ -54,9 +54,8 @@ document.addEventListener('keydown', function (e)
     {
       caretPosition = textValue.length;
     }
-  
-    //editor.innerText = textValue.substring(0, caretPosition) + '|' + textValue.substring(caretPosition, textValue.length);
-
+    
+    typed = true;
     spanText();
   }
   
@@ -86,13 +85,13 @@ function spanText()
     let span = document.createElement('span');
     if (count == caretPosition && active == editor) 
     {
-      span.innerHTML = char + '|';
+      span.innerHTML = char + '<span class="caret"></span>';
     }
     else
     {
       span.innerHTML = char;
     }
-    span.setAttribute('style', 'white-space: pre;');
+    span.setAttribute('class', 'char');
 
     span.addEventListener('mousedown', function () 
     {
@@ -117,6 +116,33 @@ function spanText()
 
   if (count == 1) 
   {
-    editor.innerText = '|';
+    editor.innerHTML = '<span class="caret" id="caret"></span>';
   }
 }
+
+// Attempt at making caret flash
+
+// setInterval(function()
+// { 
+//   var caret = document.getElementById('caret');
+//   if (typed == false) 
+//   {
+//     if (caretVisible == false)
+//     {
+//       caret.setAttribute('style', 'background-color: rgba(0, 0, 0, 0.24);');
+//       caretVisible = true;
+//     }
+//     else
+//     {
+//       caret.setAttribute('style', 'background-color: rgba(0, 0, 0, 0);');
+//       caretVisible = false;
+//     }
+//   }
+//   else
+//   {
+//     caret.setAttribute('style', 'background-color: rgba(0, 0, 0, 0.24);');
+//     caretVisible = true;
+//     typed = false;
+//     alert("hello");
+//   }
+// }, 1000);
