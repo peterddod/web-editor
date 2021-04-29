@@ -61,6 +61,7 @@ body
 #caret
 {
     border-right: 4px solid rgba(0, 0, 0, 0.452);
+    box-sizing: border-box;
 }
 
 .drop
@@ -99,6 +100,11 @@ body
 
 }
 
+.button:active
+{
+    background-color: rgb(46, 50, 58);
+}
+
 .button:hover
 {
     background-color: rgba(255, 255, 255, 0.048);
@@ -123,6 +129,16 @@ body
     cursor: pointer;
     margin: 0px 4px 0px 4px;
     border-radius: 2px;
+}
+
+.dropInput option 
+{
+    background-color: rgb(46, 48, 54);
+}
+
+#option
+{
+    padding: 4px;
 }
 
 .dropInput:focus
