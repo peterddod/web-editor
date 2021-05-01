@@ -46,11 +46,13 @@ body
 
 .editor
 {
+    display: flex;
     padding: 8px;
     width: 100%;
-    height: auto;
+    height:min-content;
     overflow-wrap: break-word;
     white-space: pre-wrap;
+    white-space: break-spaces;
 }
 
 .newline_p
@@ -154,9 +156,4 @@ body
 .spacer
 {
     width: 100%;
-}
-
-.char
-{
-
 }

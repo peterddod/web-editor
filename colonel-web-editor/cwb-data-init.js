@@ -1,11 +1,10 @@
-var textValue = "";
 var font = "";
 var bold = false;
 var italic = false;
 var underline = false;
+var textSize = 12;
 
-var caretPosition = 0;
-var caretVisible = true;
-var typed = false;
+var editor = document.getElementById('editor');
+var textSection = document.getElementById('textSection');
 
-var active = true;
+let typer = new TextDocument(document, editor);
