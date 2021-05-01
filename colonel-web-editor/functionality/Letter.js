@@ -65,6 +65,8 @@ class Letter
             styleString += "text-decoration:underline;";
         }
 
+        styleString += "font-size:" + this.style['size'] + "px;";
+
         this.htmlElement.setAttribute('style', styleString);
     }
 } 
