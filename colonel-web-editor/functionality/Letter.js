@@ -47,4 +47,24 @@ class Letter
     {
         this.htmlElement.remove();
     }
+
+    formatLetter()
+    {
+        var styleString = "";
+
+        if (this.style['bold'])
+        {
+            styleString += "font-weight:bold;";
+        }
+        if (this.style['italic'])
+        {
+            styleString += "font-style:italic;";
+        }
+        if (this.style['underline'])
+        {
+            styleString += "text-decoration:underline;";
+        }
+
+        this.htmlElement.setAttribute('style', styleString);
+    }
 } 

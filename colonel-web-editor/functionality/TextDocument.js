@@ -51,7 +51,8 @@ class TextDocument
                 letter.setIndex(this.caretPosition+1);
             }
         }
-      
+        
+        letter.formatLetter();
         this.length += 1;
         this.setCaretPosition(1, true);
     }

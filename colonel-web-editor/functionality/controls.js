@@ -38,6 +38,6 @@ document.addEventListener('keydown', function (e)
 function addChar(char)
 {
   let span = document.createElement('span');
-  var letter = new Letter(char, span);
+  var letter = new Letter(char, span, -1, bold, italic, underline);
   typer.add(letter);
 }
