@@ -37,6 +37,9 @@ class Caret
 
     setIndex(index, cascade)
     {
-        this.siblingRight.setIndex(index, true);
+        if (this.siblingRight != null)
+        {
+            this.siblingRight.setIndex(index, true);
+        }      
     }
 } 

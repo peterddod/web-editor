@@ -17,12 +17,6 @@ class TextDocument
         this.pBlock.setAttribute('class', 'newline_p');
         editor.appendChild(this.pBlock);
 
-        // let span = document.createElement('span');
-        // var letter = new Letter('&#8203', span);
-        // letter.formatLetter();
-        // this.root = letter;
-        // this.pBlock.appendChild(this.root.getHTMLElement());
-        // this.root.setIndex(0);
         this.caret = new Caret(this.root, null);
         this.pBlock.appendChild(this.caret.getHTMLElement());
     }
@@ -35,22 +29,21 @@ class TextDocument
             this.caret.setSiblingLeft(letter);
             letter.setSibling(this.caret);
             letter.setIndex(0);
-            length++;
         }
         else if (this.caret.getSiblingLeft() != null && this.caret.getSibling() == null)
         {
             this.caret.getSiblingLeft().setSibling(letter);
             letter.setSibling(this.caret);
             this.caret.setSiblingLeft(letter);
-            letter.setIndex(length);
-            length++;
+            letter.setIndex(this.length);
         }
         else if (this.caret.getSiblingLeft() == null && this.caret.getSibling() != null)
         {
-            this.caret.siblingLeft = this.root;
+            this.caret.siblingRight = this.root;
             this.root = letter;
+            this.root.setSibling(this.caret);
+            this.caret.siblingLeft = this.root;
             letter.setIndex(0, true);
-            length++;
         }
         else
         {
@@ -61,30 +54,46 @@ class TextDocument
             this.caret.siblingLeft.setIndex(index, true);
         }
 
+        this.length++;
+
         this.caret.getHTMLElement().insertAdjacentElement('beforebegin', letter.getHTMLElement());
         letter.formatLetter();
-        this.printSiblings();
     }
 
     remove(del=false)
     {
-        var leftSibling = this.findLetter(this.caretPosition-1);
-        if (leftSibling == null)
+        if (this.caret.siblingLeft != null)
         {
-            return;
-        }
-        this.caret.incrementCaret(false);  // this function aint working
-        var letter = leftSibling.getSibling();
+            var siblingLeftLeft = this.findLetter(this.caret.siblingLeft.getIndex()-1);
 
-        if (letter.getSibling() != null)
-        {
-            console.log("helloe")
-            leftSibling.setSibling(letter.getSibling());
-            leftSibling.setIndex(this.caretPosition, true);
-        }
+            if (siblingLeftLeft != null)
+            {
+                this.caret.siblingLeft.removeHTMLElement();
+                this.caret.siblingLeft = siblingLeftLeft;
+                this.caret.siblingLeft.setSibling(this.caret);
+                this.caret.siblingLeft.setIndex(this.caret.siblingLeft.getIndex(), true);
+            }
+            else
+            {
+                this.caret.siblingLeft.removeHTMLElement();
+                this.caret.siblingLeft = null;
+                this.root = this.caret.siblingRight;
+                if (this.caret.siblingRight != null)
+                {
+                    this.root.setIndex(0, true);
+                }
+                else
+                {
+                    if (this.root != null)
+                    {
+                        this.root.setIndex(0);
+                    }
+                }
+                
+            }
 
-        this.length -= 1;
-        letter.removeHTMLElement();
+            this.length -= 1;
+        }       
     }
 
     incrementCaret(plus)
@@ -140,14 +149,16 @@ class TextDocument
 
             this.caret.siblingRight.getHTMLElement().insertAdjacentElement('beforebegin', this.caret.getHTMLElement());
         }
-
-        this.printSiblings();
     }
 
     findLetter(index) 
     {
-        var i = this.root;
+        if (index < 0)
+        {
+            return null;
+        }
 
+        var i = this.root;
         
         while (i!=null)
         {

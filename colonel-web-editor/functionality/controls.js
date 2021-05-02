@@ -11,7 +11,7 @@ document.addEventListener('keydown', function (e)
   }
   else if (e.key == 'Delete') 
   {
-    delChar(caretPosition + 1);
+    typer.remove(true);
   }
   else if (e.key == 'Enter') 
   {
