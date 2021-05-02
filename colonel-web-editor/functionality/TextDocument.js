@@ -1,7 +1,7 @@
 class TextDocument
 {
     head;
-    caretPosition;
+    caret;
     length;
     textValue;
     pBlock;
@@ -17,44 +17,52 @@ class TextDocument
         this.pBlock.setAttribute('class', 'newline_p');
         editor.appendChild(this.pBlock);
 
-        let span = document.createElement('span');
-        var letter = new Letter('&#8203', span);
-        this.root = letter;
-        this.pBlock.appendChild(this.root.getHTMLElement());
-        this.root.setIndex(0);
-        this.setCaretPosition(0, true);
+        // let span = document.createElement('span');
+        // var letter = new Letter('&#8203', span);
+        // letter.formatLetter();
+        // this.root = letter;
+        // this.pBlock.appendChild(this.root.getHTMLElement());
+        // this.root.setIndex(0);
+        this.caret = new Caret(this.root, null);
+        this.pBlock.appendChild(this.caret.getHTMLElement());
     }
 
     add(letter) 
     {
-        if (this.root==null)
+        if (this.root == null)
         {
             this.root = letter;
-            this.pBlock.appendChild(letter.getHTMLElement());
+            this.caret.setSiblingLeft(letter);
+            letter.setSibling(this.caret);
+            letter.setIndex(0);
+            length++;
+        }
+        else if (this.caret.getSiblingLeft() != null && this.caret.getSibling() == null)
+        {
+            this.caret.getSiblingLeft().setSibling(letter);
+            letter.setSibling(this.caret);
+            this.caret.setSiblingLeft(letter);
+            letter.setIndex(length);
+            length++;
+        }
+        else if (this.caret.getSiblingLeft() != null && this.caret.getSibling() == null)
+        {
+            this.caret.siblingLeft = this.root;
+            this.root = letter;
             letter.setIndex(0, true);
+            length++;
         }
         else
         {
-            var leftLetter = this.findLetter(this.caretPosition);
-            var leftSibling = leftLetter.getSibling();
-
-            leftLetter.setSibling(letter);
-            leftLetter.getHTMLElement().insertAdjacentElement('afterEnd', letter.getHTMLElement());
-            
-            if (leftSibling != null)
-            {
-               letter.setSibling(leftSibling); 
-               letter.setIndex(this.caretPosition+1, true);
-            }
-            else
-            {
-                letter.setIndex(this.caretPosition+1);
-            }
+            var index = this.caret.getSiblingLeft().getIndex();
+            this.caret.getSiblingLeft().setSibling(letter);
+            this.caret.setSiblingLeft(letter);
+            letter.setSibling(this.caret);
+            letter.setIndex(index, true);
         }
-        
+
+        this.caret.getHTMLElement().insertAdjacentElement('beforebegin', letter.getHTMLElement());
         letter.formatLetter();
-        this.length += 1;
-        this.setCaretPosition(1, true);
     }
 
     remove(del=false)
@@ -64,10 +72,7 @@ class TextDocument
         {
             return;
         }
-        this.setCaretPosition(-1, true);
-        
-        
-
+        this.caret.incrementCaret(false);  // this function aint working
         var letter = leftSibling.getSibling();
 
         if (letter.getSibling() != null)
@@ -80,6 +85,17 @@ class TextDocument
         this.length -= 1;
         letter.removeHTMLElement();
     }
+
+    // moveCaret(plus)
+    // {
+    //     if (!plus)
+    //     {
+    //         if (this.caret.getSiblingLeft() != null)
+    //         {
+                
+    //         }
+    //     }
+    // }
 
     findLetter(index) 
     {
@@ -97,27 +113,5 @@ class TextDocument
         }
 
         return null;
-    }
-
-    setCaretPosition(value, increment=false)
-    {
-        var caretCurrentLetter = this.findLetter(this.caretPosition);
-        caretCurrentLetter.getHTMLElement().setAttribute('id', '');
-
-        if (increment)
-        {
-            var newCaretPos = this.caretPosition + value;
-
-            if (value!=0 && newCaretPos >= 0 && newCaretPos <= this.length) 
-            {
-                this.caretPosition += value;
-            }  
-        }
-        else
-        {
-            this.caretPosition = value;
-        }
-        
-        this.findLetter(this.caretPosition).getHTMLElement().setAttribute('id', 'caret');
     }
 }

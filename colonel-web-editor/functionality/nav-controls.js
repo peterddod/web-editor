@@ -8,7 +8,7 @@ var selectStyle = 'box-shadow: 0px 0px 4px 1px rgba(255, 255, 255, 0.1);backgrou
 boldEl.addEventListener('click', activateBold);
 italEl.addEventListener('click', activateItalic);
 undlnEl.addEventListener('click', activateUnderline);
-sizeEl.addEventListener('change', function (e) { textSize = e.target.value; });
+sizeEl.addEventListener('change', function (e) { textSize = e.target.value; typer.caret.setTextSize(textSize);  typer.caret.format();});
 
 function activateBold() 
 {

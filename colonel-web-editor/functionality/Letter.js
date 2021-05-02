@@ -48,7 +48,7 @@ class Letter
         this.htmlElement.remove();
     }
 
-    formatLetter()
+    formatLetter(size=this.style['size'])
     {
         var styleString = "";
 
@@ -65,7 +65,7 @@ class Letter
             styleString += "text-decoration:underline;";
         }
 
-        styleString += "font-size:" + this.style['size'] + "px;";
+        styleString += "font-size:" + size + "px;";
 
         this.htmlElement.setAttribute('style', styleString);
     }

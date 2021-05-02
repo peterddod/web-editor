@@ -23,11 +23,11 @@ document.addEventListener('keydown', function (e)
   }
   else if (e.key == 'ArrowLeft') 
   {
-    typer.setCaretPosition(-1, true);
+    typer.setCaretPosition(-1, true);  // fix this
   }
   else if (e.key == 'ArrowRight') 
   {
-    typer.setCaretPosition(1, true);
+    typer.setCaretPosition(1, true);  // and this
   }
   else if (e.key.length == 1 || e.key == 'Space')
   {
