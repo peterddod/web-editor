@@ -34,4 +34,9 @@ class Caret
     {
         this.htmlElement.remove();
     }
+
+    setIndex(index, cascade)
+    {
+        this.siblingRight.setIndex(index, true);
+    }
 } 

@@ -45,7 +45,7 @@ class TextDocument
             letter.setIndex(length);
             length++;
         }
-        else if (this.caret.getSiblingLeft() != null && this.caret.getSibling() == null)
+        else if (this.caret.getSiblingLeft() == null && this.caret.getSibling() != null)
         {
             this.caret.siblingLeft = this.root;
             this.root = letter;
@@ -54,15 +54,16 @@ class TextDocument
         }
         else
         {
-            var index = this.caret.getSiblingLeft().getIndex();
-            this.caret.getSiblingLeft().setSibling(letter);
-            this.caret.setSiblingLeft(letter);
-            letter.setSibling(this.caret);
-            letter.setIndex(index, true);
+            var index = this.caret.getSiblingLeft().getIndex() + 1;
+            this.caret.siblingLeft.setSibling(letter);
+            this.caret.siblingLeft = letter;
+            this.caret.siblingLeft.setSibling(this.caret);
+            this.caret.siblingLeft.setIndex(index, true);
         }
 
         this.caret.getHTMLElement().insertAdjacentElement('beforebegin', letter.getHTMLElement());
         letter.formatLetter();
+        this.printSiblings();
     }
 
     remove(del=false)
@@ -86,16 +87,62 @@ class TextDocument
         letter.removeHTMLElement();
     }
 
-    // moveCaret(plus)
-    // {
-    //     if (!plus)
-    //     {
-    //         if (this.caret.getSiblingLeft() != null)
-    //         {
-                
-    //         }
-    //     }
-    // }
+    incrementCaret(plus)
+    {
+        if (plus)
+        {
+            if (this.caret.siblingRight != null)
+            {
+                if (this.caret.siblingLeft != null)
+                {
+                    var buffer = this.caret.siblingRight.getSibling();
+                    this.caret.siblingLeft.setSibling(this.caret.siblingRight);
+                    this.caret.siblingRight.setSibling(this.caret);
+                    this.caret.siblingLeft = this.caret.siblingRight;
+                    this.caret.siblingRight = buffer;
+                }
+                else if (this.caret.siblingRight != null)
+                {
+                    var buffer = this.caret.siblingRight.getSibling();
+                    this.caret.siblingLeft = this.caret.siblingRight;
+                    this.caret.siblingLeft.setSibling(this.caret);
+                    this.caret.siblingRight = buffer;
+                }
+
+                this.caret.siblingLeft.getHTMLElement().insertAdjacentElement('afterend', this.caret.getHTMLElement());
+            }
+        }
+        else
+        {
+            try
+            {
+                var llIndex = this.caret.getSiblingLeft().getIndex()-1;
+            }
+            catch
+            {
+                return;
+            }
+
+            if (llIndex >= 0)
+            {
+                var siblingLeftLeft = this.findLetter(llIndex);
+                siblingLeftLeft.setSibling(this.caret);
+                this.caret.siblingLeft.setSibling(this.caret.siblingRight);
+                this.caret.siblingRight = this.caret.siblingLeft;
+                this.caret.siblingLeft = siblingLeftLeft;
+            }
+            else
+            {
+                this.caret.siblingLeft.setSibling(this.caret.siblingRight);
+                this.caret.siblingRight = this.caret.siblingLeft;
+                this.caret.siblingLeft = null;
+            }
+
+            this.caret.siblingRight.getHTMLElement().insertAdjacentElement('beforebegin', this.caret.getHTMLElement());
+        }
+
+        this.printSiblings();
+    }
 
     findLetter(index) 
     {
@@ -113,5 +160,40 @@ class TextDocument
         }
 
         return null;
+    }
+
+    printSiblings()
+    {
+        var left;
+        var right;
+
+        try
+        {
+            left = this.caret.siblingLeft.getValue();
+        }
+        catch
+        {
+            left = 'null';
+        }
+
+        try
+        {
+            right = this.caret.siblingRight.getValue();
+        }
+        catch
+        {
+            right = 'null';
+        }
+
+        console.log(left + " " + right);
+        console.log(this.indices(this.root));
+    }
+    
+    indices(e)
+    {
+        if (e != null)
+        {
+            return e.getIndex() + ", " + this.indices(e.getSibling());
+        }
     }
 }
